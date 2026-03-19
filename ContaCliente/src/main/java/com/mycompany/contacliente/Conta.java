@@ -19,8 +19,8 @@ public class Conta {
         this.numero = numero;
         this.cliente = cliente;
     }
-    public boolean saca(double valor){
-        if(this.saldo>0){
+    public boolean sacar(double valor){
+        if(this.saldo>0 && this.saldo >=valor){
             System.out.println("Valor sacado: "+valor);
             saldo -=valor;
             return true;
@@ -31,44 +31,25 @@ public class Conta {
     
     public void deposito(double valor){
         saldo+=valor;
-        System.out.println("Saldo atual apos deposito:"+this.saldo);
+        System.out.println("Saldo atual apos deposito: "+this.saldo);
     }
-   public void transfere(Conta destino,double valor){
-       destino.saldo +=valor;
-       this.saldo -=valor;
+   public boolean transfere(Conta contaDestino,double valor){
+      if(verificarTransacao(valor)){ 
+       contaDestino.deposito(valor);
+       this.sacar(valor);
+       return true;
+      }
+      else return false;
    }
    
-   public boolean verificarTransacao(double valor){
-       if(this.saldo >=valor){
-           System.out.println("Possivel trasferir");
-           return true;
+   private boolean verificarTransacao(double valor){
+   return saldo>valor;
        }
-       else {
-           System.out.println("Saldo insuficiente ");
-           return false;
-       }
-   }
+   
    public void imprimir(){
        System.out.println("Saldo: "+saldo);
        System.out.println("Numero: "+numero);
        cliente.imprimir();
-   }
-
-   
-    public double getSaldo() {
-        return saldo;
-    }
-
-    public void setSaldo(double saldo) {
-        this.saldo = saldo;
-    }
-
-    public int getNumero() {
-        return numero;
-    }
-
-    public void setNumero(int numero) {
-        this.numero = numero;
-    }
+   }   
     
 }
